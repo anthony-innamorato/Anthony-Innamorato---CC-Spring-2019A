@@ -1,3 +1,5 @@
+//this processing file will attempt to recreate "Painterly Realism of a Football Player – Color Masses in the 4th Dimension" by Kazimir Malevich
+
 void setup() {
   
   size(550, 850);
