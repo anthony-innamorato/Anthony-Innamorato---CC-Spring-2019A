@@ -88,6 +88,7 @@ void collisionDetection() {
 			ballVx *= -1.0;
 			ballx += 5;
 			ballMult += .1;
+			background(0, 206, 255);
 		}
 	}
 
@@ -96,6 +97,7 @@ void collisionDetection() {
 			ballVx *= -1.0;
 			ballx -= 5;
 			ballMult += .1;
+			background(255, 0, 200);
 		}
 	}
 
