@@ -4,6 +4,7 @@ float ballVx, ballVy;
 float timeElapsed;
 boolean p1Won, p2Won = false;
 float ballMult;
+int[] score = {0, 0};
 
 //p1 controlled with up->w, down->s
 //p2 controlled with up and down keys
@@ -22,13 +23,13 @@ void setup() {
 	ballMult = 1.0;
 
 	timeElapsed = 0.0;
-	textSize(100);
 }
 
 void draw() {
 
 	if (p1Won || p2Won) {
 		fill(0, 0, 0);
+		textSize(100);
 		if (p1Won) {
 			background(0, 206, 255);
 			text("Congrats! You Won Player1!", width/20, height/2);
@@ -41,6 +42,7 @@ void draw() {
 	}
 
 	background(0, 0, 0);
+	fill(255, 255, 255);
 	//border in middle
 	for (int i = 0; i < 11; i++) {
 		rect(width/2, i * (height/10) - 10, 15, height/15);
@@ -61,6 +63,7 @@ void draw() {
 	circle(ballx, bally, 40);
 
 	collisionDetection();
+	drawScore();
 
 	if (ballx >= width) {p1Won = true;}
 	else if (ballx <= 0) {p2Won = true;}
@@ -88,6 +91,7 @@ void collisionDetection() {
 			ballVx *= -1.0;
 			ballx += 5;
 			ballMult += .1;
+			score[0]++;
 			background(0, 206, 255);
 		}
 	}
@@ -97,8 +101,16 @@ void collisionDetection() {
 			ballVx *= -1.0;
 			ballx -= 5;
 			ballMult += .1;
+			score[1]++;
 			background(255, 0, 200);
 		}
 	}
 
+}
+
+void drawScore() {
+	textSize(50);
+	fill(255, 255, 255);
+	text(score[0], width/4, height/8);
+	text(score[1], width*.75, height/8);
 }
