@@ -25,9 +25,9 @@ void setup() {
 
 
 	for (int i = 0; i < 50; i++) {
-		fill(circles[i]._colors[0], circles[i]._colors[1], circles[i]._colors[2]);
-		stroke(255);
-		strokeWeight(2);
+		fill(0);
+		stroke(circles[i]._colors[0], circles[i]._colors[1], circles[i]._colors[2]);
+		strokeWeight(4);
 		circle(circles[i]._x, circles[i]._y, 40);
 		stroke(circles[i]._colors[0], circles[i]._colors[1], circles[i]._colors[2]);
 		for (int j = i+1; j < 50; j++) {
