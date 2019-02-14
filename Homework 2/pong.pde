@@ -89,7 +89,7 @@ void collisionDetection() {
 	if (bally >= p1y && bally <= p1y + 200) {
 		if (ballx <= 50 + 20 && ballx >= 35) {
 			ballVx *= -1.0;
-			ballx += 5;
+			ballx += 10;
 			ballMult += .1;
 			score[0]++;
 			background(0, 206, 255);
@@ -99,7 +99,7 @@ void collisionDetection() {
 	if (bally >= p2y && bally <= p2y + 200) {
 		if (ballx <= width-45 + 15 + 20 && ballx + 20 >= width-45) {
 			ballVx *= -1.0;
-			ballx -= 5;
+			ballx -= 10;
 			ballMult += .1;
 			score[1]++;
 			background(255, 0, 200);
