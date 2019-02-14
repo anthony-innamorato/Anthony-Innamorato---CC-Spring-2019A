@@ -1,5 +1,4 @@
 Circle[] circles = new Circle[50];
-//10x5
 
 class Circle {
 	float _x, _y;
