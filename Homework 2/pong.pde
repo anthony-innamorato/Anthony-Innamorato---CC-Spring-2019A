@@ -62,11 +62,25 @@ void draw() {
 	ballx += (ballVx * ballMult); bally += (ballVy * ballMult);
 	circle(ballx, bally, 40);
 
-	collisionDetection();
 	drawScore();
 
-	if (ballx >= width) {p1Won = true;}
-	else if (ballx <= 0) {p2Won = true;}
+	if (ballx >= width) {
+		score[0]++;
+		ballx = width/4;
+		bally = height/2;
+		background(0, 206, 255);
+		ballMult = 1.0;
+	}
+	else if (ballx <= 0) {
+		score[1]++;
+		ballx = width*.75;
+		bally = height/2;
+		background(255, 0, 200);
+		ballMult = 1.0;
+	}
+	if (score[0] == 10) {p1Won = true;}
+	else if (score[1] == 10) {p2Won = true;}
+	collisionDetection();
 
 	if (bally >= height || bally <= 0) {
 		ballVy *= -1.0;
@@ -90,8 +104,7 @@ void collisionDetection() {
 		if (ballx <= 50 + 20 && ballx >= 35) {
 			ballVx *= -1.0;
 			ballx += 10;
-			ballMult += .1;
-			score[0]++;
+			ballMult += .3;
 			background(0, 206, 255);
 		}
 	}
@@ -100,8 +113,7 @@ void collisionDetection() {
 		if (ballx <= width-45 + 15 + 20 && ballx + 20 >= width-45) {
 			ballVx *= -1.0;
 			ballx -= 10;
-			ballMult += .1;
-			score[1]++;
+			ballMult += .3;
 			background(255, 0, 200);
 		}
 	}
