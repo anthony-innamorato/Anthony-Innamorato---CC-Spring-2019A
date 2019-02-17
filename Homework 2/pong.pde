@@ -5,6 +5,7 @@ float timeElapsed;
 boolean p1Won, p2Won = false;
 float ballMult;
 int[] score = {0, 0};
+boolean paused = true;
 
 //p1 controlled with up->w, down->s
 //p2 controlled with up and down keys
@@ -26,6 +27,7 @@ void setup() {
 }
 
 void draw() {
+  if (paused) {userInput();return;}
 
 	if (p1Won || p2Won) {
 		fill(0, 0, 0);
@@ -92,6 +94,7 @@ void draw() {
 
 void userInput() {
 	if (keyPressed) {
+    if (paused) {if (key == 'p') {paused = false;}}
 		if (key == 'w' && p1y >= 0) {p1y -= 15;}
 		if (key == 's' && p1y <= height - 200) {p1y += 15;}
 		if (keyCode == UP && p2y >= 0) { p2y -= 15;}
