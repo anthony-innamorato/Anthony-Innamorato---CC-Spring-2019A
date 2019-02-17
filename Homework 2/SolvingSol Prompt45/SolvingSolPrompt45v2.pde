@@ -39,42 +39,39 @@ class SetOfFour {
 	Rectangle[] rects = new Rectangle[4];
 	SetOfFour(int index) {
 		float[] offsets = new float[2];
+		int colNum;
 		if ((index >= 10 && index <=  18) ||
 		    (index >= 29 && index <= 37)) {
 			//shifted row
-			int rowNum = 0;
-			if (index <= 18) {rowNum = index%10;}
-			else {rowNum = index%29;}
-			offsets[0] = 72.5 + (rowNum*125);
-			if (index <= 18) {offsets[1] = 60;}
-			else {offsets[1] = 185;}
+			if (index <= 18) {colNum = index%10;}
+			else {colNum = index%29;}
+			offsets[0] = 72.5 + (colNum*125);
+			if (index <= 18) {offsets[1] = 60 + 125;}
+			else {offsets[1] = 60 + 375;}
 
 			for (int i = 0; i < 4; i++) {
-				rects[i] = oneRect(rowNum, i, offsets);
+				rects[i] = oneRect(colNum, i, offsets);
 			}
 
 		}
 		else {
-			int rowNum = 0;
-			if (index < 10) {rowNum = index;}
-			else if (index < 29) {rowNum = index%19;}
-			else {rowNum = index%38;}
-			offsets[0] = 10 + (rowNum*125);
+			if (index < 10) {colNum = index;}
+			else if (index < 29) {colNum = index%19;}
+			else {colNum = index%38;}
+			offsets[0] = 10 + (colNum*125);
 			if (index < 10) {offsets[1] = 60;}
-			else if (index < 29) { offsets[1] = 185;}
-			else {offsets[1] = 310;}
+			else if (index < 29) { offsets[1] = 60 + 250;}
+			else {offsets[1] = 60 + 500;}
 
 			for (int i = 0; i < 4; i++) {
-				rects[i] = oneRect(rowNum, i, offsets);
+				rects[i] = oneRect(colNum, i, offsets);
 			}
 		}
 
 	}
 
 	void draw() {
-		for (int i = 0; i < 4; i++) {
-			rects[i].draw();
-		}
+		for (int i = 0; i < 4; i++) { rects[i].draw(); }
 	}
 
 	private Rectangle oneRect(int pos, int index, float[] offsets) {
@@ -85,12 +82,14 @@ class SetOfFour {
 			x += 50;
 			initWidth = 10;
 			initHeight = 40;
+			if (index == 1) {y -= 50;}
+			else {y += 20;}
 		}
 		else {
 			initWidth = 40;
 			initHeight = 10;
 		}
-		if (index == 2) {x += 20;}
+		if (index == 2) {x += 70;}
 		return new Rectangle(x, y, initWidth, initHeight, pos);
 	}
 }
@@ -101,7 +100,7 @@ void setup() {
 
 	stroke(255);
 	strokeWeight(1);
-	frameRate(120);
+	frameRate(240);
 
 	for (int i = 0; i < 48; i++) {
 		entities[i] = new SetOfFour(i);
@@ -110,7 +109,5 @@ void setup() {
 
 
 void draw() {
-	for (int i = 0; i < 48; i++) {
-		entities[i].draw();
-	}
+	for (int i = 0; i < 48; i++) {entities[i].draw();}
 }
