@@ -78,8 +78,8 @@ void draw() {
 		background(255, 0, 200);
 		ballMult = 1.0;
 	}
-	if (score[0] == 10) {p1Won = true;}
-	else if (score[1] == 10) {p2Won = true;}
+	if (score[0] == 3) {p1Won = true;}
+	else if (score[1] == 3) {p2Won = true;}
 	collisionDetection();
 
 	if (bally >= height || bally <= 0) {
