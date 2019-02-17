@@ -11,6 +11,7 @@ void setup() {
 }
 
 void draw() {
+	background(0, 0, 0);
 	fill(currCol[0], currCol[1], currCol[2]);
 	for (int j = 0; j < 5; j++) {
 		if (j % 2 == 0) {
