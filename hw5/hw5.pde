@@ -1,4 +1,5 @@
 Rick rick;
+PImage background;
 
 void setup() {
 	background(255);
@@ -7,9 +8,11 @@ void setup() {
 	strokeWeight(2);
 
 	rick = new Rick();
+	background = loadImage("background.jpg");
+	background.resize(768, 432);
 }
 
 void draw() {
-	background(255);
+	image(background, 0, 0);
 	rick.draw();
 }
