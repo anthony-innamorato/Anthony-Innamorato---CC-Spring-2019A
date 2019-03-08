@@ -4,7 +4,7 @@ class Rick {
 	private int x, xVel;
 	private PImage lowerBrow, irregular;
 	Rick() {
-		x = 0; xVel = 1;
+		x = 0; xVel = 2;
 		lowerBrow = loadImage("lowerBrow.png");
 		irregular = loadImage("irregular.png");
 	}
