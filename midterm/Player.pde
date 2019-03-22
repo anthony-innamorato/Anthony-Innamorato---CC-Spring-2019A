@@ -1,6 +1,6 @@
 class Player extends Entity {
-	public Player(float x, float y, int colorInd) {
-		super(x, y, colorInd);
+	public Player(float x, float y) {
+		super(x, y);
 	}
 
 	public void draw() {

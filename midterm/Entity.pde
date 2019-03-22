@@ -1,10 +1,9 @@
 class Entity {
 	protected float x, y;
-	protected int colorInd;
-	public Entity(float x, float y, int colorInd) {
+	protected boolean alive;
+	public Entity(float x, float y) {
 		this.x = x; this.y = y;
-		this.colorInd = colorInd;
-
+		alive = true;
 	}
 
 	public void draw() {}

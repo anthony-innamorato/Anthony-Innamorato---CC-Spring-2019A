@@ -1,4 +1,5 @@
 ArrayList<Entity> entities;
+Bullet pBull;
 
 void setup() {
 	size(1920, 1080);
@@ -8,7 +9,7 @@ void setup() {
 
 
 	entities = new ArrayList<Entity>();
-	entities.add(new Player(width/2, height - 100, 0));
+	entities.add(new Player(width/2, height - 100));
 
 	//add enemies
 	for (int i = 0; i < 3; i++) {
@@ -24,8 +25,15 @@ void draw() {
 	background(0);
 	input();
 	for (Entity curr : entities) {
+		if (!curr.alive) continue;
 		curr.update();
 		curr.draw();
+	}
+	if (pBull != null) {
+		if (pBullCollision()) return;
+		pBull.update();
+		pBull.draw();
+		if (pBull.y < 0) pBull = null;
 	}
 }
 
@@ -39,8 +47,32 @@ void input() {
 			if (p1.x < width - 30) p1.x += 10;
 		}
 		//TODO
-		if (key == UP); //add bullet
+		if (key == ' ') {
+			if (pBull == null) createBullet();
+		}
 	}
+}
+
+void createBullet() {
+	Entity p1 = entities.get(0);
+	pBull = new Bullet(p1.x, p1.y - 30);
+}
+
+boolean pBullCollision() {
+	for (int i = 1; i < entities.size(); i++) {
+		Entity curr = entities.get(i);
+		if (!curr.alive) continue;
+		if (pBull.x > curr.x - 100 && pBull.x < curr.x + 100) {
+			//its 120 instead of 100 to account for
+			//the player bullet being in rectMode(CENTER)
+			if (pBull.y < curr.y + 120) {
+				pBull = null;
+				curr.alive = false;
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 
