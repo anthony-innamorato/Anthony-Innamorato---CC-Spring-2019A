@@ -4,7 +4,7 @@ class Player extends Entity {
 	}
 
 	public void draw() {
-		fill(255);
+		fill(0);
 		rect(x, y, 30, 30);
 	}
 }
