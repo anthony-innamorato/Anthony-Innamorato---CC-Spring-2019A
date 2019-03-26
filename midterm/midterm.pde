@@ -3,12 +3,14 @@ Bullet pBull;
 boolean playerLost = false;
 boolean playerWon = false;
 boolean titleScreen = true;
+int titleBuffer;
 
 void setup() {
 	size(1920, 1080);
 	background(0);
 	frameRate(60);
 	rectMode(CENTER);
+	titleBuffer = 30;
 
 
 	entities = new ArrayList<Entity>();
@@ -96,6 +98,7 @@ void playerLostScreen() {
 	textSize(100);
 	fill(0);
 	text("GAME OVER", width/2 - 275, height/2);
+	if (keyPressed && key == ENTER) reset();
 }
 
 void playerWonScreen() {
@@ -103,6 +106,7 @@ void playerWonScreen() {
 	textSize(100);
 	fill(0);
 	text("YOU WON", width/2 - 275, height/2);
+	if (keyPressed && key == ENTER) reset();
 }
 
 void checkWon() {
@@ -114,11 +118,12 @@ void checkWon() {
 }
 
 void titleScreen() {
+	titleBuffer--;
 	background(0);
 	textSize(100);
 	fill(255);
 	text("ANTI-RGB", width/2 - 275, height/2);
-	if (playerStartedGame()) titleScreen = false;
+	if (playerStartedGame() && titleBuffer < 0) titleScreen = false;
 }
 
 boolean playerStartedGame() {
@@ -126,4 +131,14 @@ boolean playerStartedGame() {
 		if (key == ENTER) return true;
 	}
 	return false;
+}
+
+void reset() {
+	entities.clear();
+	pBull = null;
+	playerLost = false;
+	playerWon = false;
+	titleScreen = true;
+
+	setup();
 }
