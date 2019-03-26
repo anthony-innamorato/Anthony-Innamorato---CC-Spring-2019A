@@ -7,7 +7,6 @@ int titleBuffer;
 
 void setup() {
 	size(1920, 1080);
-	background(0);
 	frameRate(60);
 	rectMode(CENTER);
 	titleBuffer = 30;
@@ -42,7 +41,10 @@ void draw() {
 	background(255);
 	input();
 	for (Entity curr : entities) {
-		if (!curr.alive) continue;
+		if (!curr.alive) {
+			curr.partSys.run();
+			continue;
+		}
 		curr.update();
 		curr.draw();
 	}
@@ -86,6 +88,7 @@ boolean pBullCollision() {
 			if (pBull.y < curr.y + 120) {
 				pBull = null;
 				curr.alive = false;
+				curr.partSys = new ParticleSystem(curr.x, curr.y);
 				return true;
 			}
 		}
