@@ -7,14 +7,16 @@ class Particle {
 		timeLeft = 255.0;
 	}
 	public void update() {
+		Entity p1 = entities.get(0);
+		if (dist(x, y, p1.x, p1.y) < 20) playerLost = true;
 		x += velX;
-		timeLeft -= 20;
+		timeLeft -= .5;
 		velY += 9.81/60;
 		y += velY;
 	}
 
 	public void draw() {
-		fill(0, 0, 0, timeLeft);
+		fill(0, timeLeft);
 		ellipse(x, y, 10, 10);
 	}
 }

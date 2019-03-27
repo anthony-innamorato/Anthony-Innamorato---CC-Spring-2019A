@@ -36,6 +36,7 @@ class Enemy extends Entity {
 				playerLost = true;
 			}
 		}
+		if (y + 100 > entities.get(0).y - 15) playerLost = true;
 		if (bull != null) bull.update();
 		for (int i = 0; i < 50; i++) currColor.refreshColor();
 	}
