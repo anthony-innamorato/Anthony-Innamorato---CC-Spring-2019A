@@ -1,16 +1,17 @@
 class Bullet extends Entity{
-	private int yDir;
+	private float yVel;
 	private int framesToWait;
-	public Bullet(float x, float y, int yDir) {
+	private boolean isPlayerBull = false;
+	public Bullet(float x, float y, boolean isPlayerBull) {
 		super(x, y);
-		this.yDir = yDir;
 		framesToWait = 0;
+		this.isPlayerBull = isPlayerBull;
 	}
 
-	public Bullet(float x, float y, int yDir, int framesToWait) {
+	public Bullet(float x, float y, int framesToWait) {
 		super(x, y);
-		this.yDir = yDir;
 		this.framesToWait = framesToWait;
+		this.yVel = 0;
 	}
 
 	public void draw() {
@@ -28,6 +29,11 @@ class Bullet extends Entity{
 			framesToWait--;
 			return;
 		}
-		y += 10 * yDir;
+		//TODO CHANGE YVEL
+		if (isPlayerBull) y -= 10;
+		else {
+			yVel += 9.81/60;
+			y += yVel;
+		}
 	}
 }

@@ -1,3 +1,8 @@
+//updates since presentation:
+// 1). added gravity to enemy bullets
+// 2). added second level as condition for final win
+
+
 ArrayList<Entity> entities;
 Bullet pBull;
 boolean playerLost = false;
@@ -23,6 +28,10 @@ void setup() {
 			entities.add(new Enemy((300*j) + 210 - (150*(i%2)), (225*(i-1)) - 300, i, j));
 		}
 	}
+}
+
+void level2Setup() {
+	//TODO INPLEMENT THIS
 }
 
 void draw() {
@@ -75,7 +84,7 @@ void input() {
 
 void createBullet() {
 	Entity p1 = entities.get(0);
-	pBull = new Bullet(p1.x, p1.y - 30, -1);
+	pBull = new Bullet(p1.x, p1.y - 30, true);
 }
 
 boolean pBullCollision() {

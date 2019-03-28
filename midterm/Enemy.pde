@@ -7,7 +7,7 @@ class Enemy extends Entity {
 		super(x, y);
 		ySpeedStep = 1;
 		this.row = row; this.col = col;
-		if (row != 0) bull = new Bullet(x, y + 102.5, 1, int(random(60)));
+		if (row != 0) bull = new Bullet(x, y + 102.5, int(random(60)));
 		currColor = new MyColor(255, 0, 0);
 	}
 
@@ -24,10 +24,11 @@ class Enemy extends Entity {
 		//if null
 		if (bull == null) {
 			//create bull
+			//TODO CHANGE BULL YVEL
 			if (row == 0) {
-				if (!entities.get(13+col).alive) bull = new Bullet(x, y + 102.5, 1);
+				if (!entities.get(13+col).alive) bull = new Bullet(x, y + 102.5, false);
 			}
-			else bull = new Bullet(x, y + 102.5, 1);
+			else bull = new Bullet(x, y + 102.5, false);
 		}
 		//if oob or hit player
 		else if (bull.y > height) bull = null;
