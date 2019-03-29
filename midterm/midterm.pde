@@ -8,6 +8,7 @@ Bullet pBull;
 boolean playerLost = false;
 boolean playerWon = false;
 boolean titleScreen = true;
+boolean level1 = true;
 int titleBuffer;
 
 void setup() {
@@ -15,7 +16,6 @@ void setup() {
 	frameRate(60);
 	rectMode(CENTER);
 	titleBuffer = 30;
-
 
 	entities = new ArrayList<Entity>();
 	entities.add(new Player(width/2, height - 100));
@@ -32,6 +32,26 @@ void setup() {
 
 void level2Setup() {
 	//TODO INPLEMENT THIS
+	entities.clear();
+	pBull = null;
+	level1 = false;
+	playerLost = false;
+	playerWon = false;
+	titleBuffer = 30;
+
+	entities.add(new Player(width/2, height - 100));
+	//odd rows
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 1920/300; j++) {
+			entities.add(new Enemy( (300*j) + 210, -1065 + (510*i), i, j));
+		}
+	}
+
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < (1920/300) + 1; j++) {
+			entities.add(new Enemy( (300*j) + 60, -810 + (510*i), i, j));
+		}
+	}
 }
 
 void draw() {
@@ -125,6 +145,10 @@ void checkWon() {
 	for (int i = 1; i < entities.size(); i++) {
 		Entity curr = entities.get(i);
 		if (curr.alive) return;
+	}
+	if (level1) {
+		level2Setup();
+		return;
 	}
 	playerWon = true;
 }
