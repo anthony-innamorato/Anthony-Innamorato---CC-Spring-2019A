@@ -1,1 +1,1 @@
-this is rediculously hard now lol
+this is ridiculously hard now lol
