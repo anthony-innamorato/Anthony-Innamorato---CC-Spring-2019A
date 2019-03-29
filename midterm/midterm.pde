@@ -175,6 +175,7 @@ void reset() {
 	playerLost = false;
 	playerWon = false;
 	titleScreen = true;
+	level1 = true;
 
 	setup();
 }
