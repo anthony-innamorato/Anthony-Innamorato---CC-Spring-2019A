@@ -3,6 +3,8 @@ Entity[] entities = new Entity[2];
 boolean[] movingDirs = new boolean[4];
 Bullet pBull;
 ArrayList<EnemyBullet> enemyBulls;
+int numStars = 42;
+Star[] stars = new Star[(numStars*2) + 7];
 
 void setup() {
 	size(1920, 1080);
@@ -15,14 +17,32 @@ void setup() {
 	entities[0] = new Player(100, height/2, loadImage("assets/player.png"));
 	//add boss
 	entities[1] = new Boss(width-200, height/2, loadImage("assets/boss1.png"));
+
+	PImage star = loadImage("assets/star.jpg");
+	star.resize(87/4, 86/4);
+
+	for (int i = 0; i < numStars; i++) {
+		stars[i] = new Star((width/6)*(i/7) + 200, (height/7)*(i%7) + 100, star);
+	}
+	for (int i = 0; i < numStars; i++) {
+		stars[numStars+i] = new Star((width/6)*(i/7)+50, (height/7)*(i%7) + 175, star);
+	}
+	for (int i = 0; i < 7; i++) {
+		stars[(numStars*2)+i] = new Star(width+50, (height/7)*(i%7) + 175, star);
+	}
 }
 
 void draw() {
 	background(0);
 
+	for (Star star : stars) {
+		star.update();
+		star.draw();
+	}
+
 	for (int i = 0; i < enemyBulls.size(); i++) {
 		EnemyBullet curr = enemyBulls.get(i);
-		if (curr.update()) {
+		if (curr.update() || playerCollision(curr)) {
 			enemyBulls.remove(i);
 			i--;
 			continue;
@@ -37,7 +57,7 @@ void draw() {
 
 	input();
 	pBullUpdate();
-	if (frameCount%10 == 0 && (frameCount/30)%2 == 0)createEnemyBull();
+	if (frameCount%10 == 0 && (frameCount/60)%2 == 0)createEnemyBull();
 }
 
 void input() {
@@ -82,6 +102,18 @@ boolean bossCollision() {
 		pBull.y > enemy.y - halfHeight && pBull.y < enemy.y + halfWidth) {
 			enemy.health--;
 			pBull = null;
+			return true;
+	}
+	return false;
+}
+
+boolean playerCollision(EnemyBullet bull) {
+	Entity player = entities[0];
+	float halfWidth = player.imgWidth/2;
+	float halfHeight = player.imgHeight/2;
+	if (bull.x > player.x - halfWidth && bull.x < player.x + halfWidth &&
+		bull.y > player.y - halfHeight && bull.y < player.y + halfWidth) {
+			player.health--;
 			return true;
 	}
 	return false;

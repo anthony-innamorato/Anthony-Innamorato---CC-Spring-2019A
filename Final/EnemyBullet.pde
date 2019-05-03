@@ -3,7 +3,7 @@ class EnemyBullet {
 	float xVel;
 	EnemyBullet(float x, float y) {
 		this.x = x; this.y = y;
-		this.xVel = -10;
+		this.xVel = -15;
 	}
 
 	void draw() {
