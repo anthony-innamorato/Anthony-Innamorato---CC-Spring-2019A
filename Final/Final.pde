@@ -1,3 +1,9 @@
+import processing.video.*;
+import processing.sound.*;
+SoundFile explosionSound;
+SoundFile music;
+
+
 Entity[] entities = new Entity[2];
 //in format w, a, s, d
 boolean[] movingDirs = new boolean[4];
@@ -8,6 +14,7 @@ Star[] stars = new Star[(numStars*2) + 7];
 int enemyStage = 1;
 int framesForExplosion = 0;
 PImage explosionSprite;
+
 
 void setup() {
 	size(1920, 1080);
@@ -22,6 +29,10 @@ void setup() {
 	entities[1] = new Boss(width-200, height/2, loadImage("assets/boss1.png"));
 
 	explosionSprite = loadImage("assets/explosion.png");
+	explosionSound = new SoundFile(this, sketchPath("explosion.wav"));
+
+	music = new SoundFile(this, sketchPath("music.wav"));
+	music.loop();
 
 	PImage star = loadImage("assets/star.jpg");
 	star.resize(87/4, 86/4);
@@ -115,10 +126,12 @@ boolean bossCollision() {
 			if (enemy.health == 30) {
 				enemyStage = 2;
 				framesForExplosion = 120;
+				explosionSound.play();
 			}
 			else if (enemy.health == 10) {
 				enemyStage = 3;
 				framesForExplosion = 120;
+				explosionSound.play();
 			}
 			return true;
 	}
