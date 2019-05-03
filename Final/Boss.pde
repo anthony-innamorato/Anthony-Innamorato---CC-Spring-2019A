@@ -19,13 +19,17 @@ class Boss extends Entity {
 	}
 
 	void update() {
+		if (framesForExplosion != 0) {
+			framesForExplosion--;
+			return;
+		}
 		//set new random point to travel to
 		if (frameCount%60 == 0) {
-			float randX = random(width*.66, width - imgWidth/2);
-			float randY = random(0 + imgHeight/2, height - imgHeight/2);
+			float randX = random(width*.66, width - imgWidth - 100);
+			float randY = random(imgHeight+200, height-imgHeight-200);
 
-			xVel = (x - randX) * -.01;
-			yVel = (y - randY) * -.01;
+			xVel = (x - randX) * (-.01*enemyStage);
+			yVel = (y - randY) * (-.01*enemyStage);
 		}
 		x += xVel; y += yVel;
 	}

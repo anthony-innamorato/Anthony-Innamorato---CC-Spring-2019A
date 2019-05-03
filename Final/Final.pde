@@ -5,6 +5,9 @@ Bullet pBull;
 ArrayList<EnemyBullet> enemyBulls;
 int numStars = 42;
 Star[] stars = new Star[(numStars*2) + 7];
+int enemyStage = 1;
+int framesForExplosion = 0;
+PImage explosionSprite;
 
 void setup() {
 	size(1920, 1080);
@@ -17,6 +20,8 @@ void setup() {
 	entities[0] = new Player(100, height/2, loadImage("assets/player.png"));
 	//add boss
 	entities[1] = new Boss(width-200, height/2, loadImage("assets/boss1.png"));
+
+	explosionSprite = loadImage("assets/explosion.png");
 
 	PImage star = loadImage("assets/star.jpg");
 	star.resize(87/4, 86/4);
@@ -57,14 +62,19 @@ void draw() {
 
 	input();
 	pBullUpdate();
+	if (framesForExplosion!=0) {
+		drawExplosion();
+		return;
+	}
 	if (frameCount%10 == 0 && (frameCount/60)%2 == 0)createEnemyBull();
+	println(framesForExplosion);
 }
 
 void input() {
-	if (movingDirs[0] && entities[0].y > 100) entities[0].y -= 10;
-	if (movingDirs[1] && entities[0].x > 100) entities[0].x -= 10;
-	if (movingDirs[2] && entities[0].y < height - 100) entities[0].y += 10;
-	if (movingDirs[3] && entities[0].x < width - 100) entities[0].x += 10;
+	if (movingDirs[0] && entities[0].y > 100) entities[0].y -= 15;
+	if (movingDirs[1] && entities[0].x > 100) entities[0].x -= 15;
+	if (movingDirs[2] && entities[0].y < height - 100) entities[0].y += 15;
+	if (movingDirs[3] && entities[0].x < width - 100) entities[0].x += 15;
 }
 
 void keyPressed() {
@@ -72,7 +82,7 @@ void keyPressed() {
 	else if (key == 'a') movingDirs[1] = true;
 	else if (key == 's') movingDirs[2] = true;
 	else if (key == 'd') movingDirs[3] = true;
-	if (key == ' ' && pBull == null) createBullet();
+	if (key == ' ' && pBull == null && framesForExplosion == 0) createBullet();
 }
 
 void keyReleased() {
@@ -102,6 +112,14 @@ boolean bossCollision() {
 		pBull.y > enemy.y - halfHeight && pBull.y < enemy.y + halfWidth) {
 			enemy.health--;
 			pBull = null;
+			if (enemy.health == 30) {
+				enemyStage = 2;
+				framesForExplosion = 120;
+			}
+			else if (enemy.health == 10) {
+				enemyStage = 3;
+				framesForExplosion = 120;
+			}
 			return true;
 	}
 	return false;
@@ -120,7 +138,11 @@ boolean playerCollision(EnemyBullet bull) {
 }
 
 void createEnemyBull() {
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < enemyStage + (enemyStage-1); i++) {
 		enemyBulls.add(new EnemyBullet(entities[1].x, entities[1].y + (20*i)));
 	}
+}
+
+void drawExplosion() {
+	image(explosionSprite, entities[1].x, entities[1].y);
 }
