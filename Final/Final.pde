@@ -2,6 +2,9 @@ import processing.video.*;
 import processing.sound.*;
 SoundFile explosionSound;
 SoundFile music;
+SoundFile laserSound;
+SoundFile lostMusic;
+SoundFile wonMusic;
 
 
 Entity[] entities = new Entity[2];
@@ -14,6 +17,11 @@ Star[] stars = new Star[(numStars*2) + 7];
 int enemyStage = 1;
 int framesForExplosion = 0;
 PImage explosionSprite;
+
+boolean titleScreen = true;
+boolean bossFight = false;
+boolean playerWon = false;
+boolean playerLost = false;
 
 
 void setup() {
@@ -34,6 +42,10 @@ void setup() {
 	music = new SoundFile(this, sketchPath("music.wav"));
 	music.loop();
 
+	laserSound = new SoundFile(this, sketchPath("laser.wav"));
+	lostMusic = new SoundFile(this, sketchPath("lost.wav"));
+	wonMusic = new SoundFile(this, sketchPath("won.wav"));
+
 	PImage star = loadImage("assets/star.jpg");
 	star.resize(87/4, 86/4);
 
@@ -49,6 +61,19 @@ void setup() {
 }
 
 void draw() {
+	if (titleScreen) {
+		titleScreen();
+		return;
+	}
+	if (playerWon) {
+		playerWonScreen();
+		return;
+	}
+	if (playerLost) {
+		playerLostScreen();
+		return;
+	}
+
 	background(0);
 
 	for (Star star : stars) {
@@ -78,7 +103,8 @@ void draw() {
 		return;
 	}
 	if (frameCount%10 == 0 && (frameCount/60)%2 == 0)createEnemyBull();
-	println(framesForExplosion);
+	if (checkWon()) playerWon = true;
+	if (checkLost()) playerLost = true;
 }
 
 void input() {
@@ -104,6 +130,7 @@ void keyReleased() {
 }
 
 void createBullet() {
+	laserSound.play();
 	pBull = new Bullet(entities[0].x + 20, entities[0].y, 20, 0);
 }
 
@@ -151,6 +178,7 @@ boolean playerCollision(EnemyBullet bull) {
 }
 
 void createEnemyBull() {
+	laserSound.play();
 	for (int i = 0; i < enemyStage + (enemyStage-1); i++) {
 		enemyBulls.add(new EnemyBullet(entities[1].x, entities[1].y + (20*i)));
 	}
@@ -158,4 +186,48 @@ void createEnemyBull() {
 
 void drawExplosion() {
 	image(explosionSprite, entities[1].x, entities[1].y);
+}
+
+void titleScreen() {
+	background(255);
+	textSize(100);
+	fill(0);
+	text("Work in Prog", width/2 - 275, height/2);
+	if (keyPressed && key == ENTER) {
+		titleScreen = false; bossFight = true;
+	}
+}
+
+
+void playerLostScreen() {
+	background(255);
+	textSize(100);
+	fill(0);
+	text("GAME OVER", width/2 - 275, height/2);
+}
+
+void playerWonScreen() {
+	background(255);
+	textSize(100);
+	fill(0);
+	text("YOU WON", width/2 - 275, height/2);
+}
+
+
+boolean checkWon() {
+	if (entities[1].health == 0) {
+		music.stop();
+		wonMusic.loop();
+		return true;
+	}
+	return false;
+}
+
+boolean checkLost() {
+	if (entities[0].health == 0) {
+		music.stop();
+		lostMusic.loop();
+		return true;
+	}
+	return false;
 }
