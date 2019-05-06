@@ -1,9 +1,9 @@
 class EnemyBullet {
 	float x, y;
-	float xVel;
+	float xVel, yVel;
 	EnemyBullet(float x, float y) {
 		this.x = x; this.y = y;
-		this.xVel = -15;
+		this.xVel = -15; this.yVel = 0;
 	}
 
 	void draw() {
@@ -13,7 +13,7 @@ class EnemyBullet {
 	}
 
 	boolean update() {
-		x += xVel;
+		x += xVel; y += yVel;
 		if (x < 0 || x > width) {
 			return true;
 		}

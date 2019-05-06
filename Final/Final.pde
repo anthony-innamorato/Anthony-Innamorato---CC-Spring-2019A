@@ -37,14 +37,14 @@ void setup() {
 	entities[1] = new Boss(width-200, height/2, loadImage("assets/boss1.png"));
 
 	explosionSprite = loadImage("assets/explosion.png");
-	explosionSound = new SoundFile(this, sketchPath("explosion.wav"));
+	explosionSound = new SoundFile(this, sketchPath("assets/explosion.wav"));
 
-	music = new SoundFile(this, sketchPath("music.wav"));
+	music = new SoundFile(this, sketchPath("assets/music.wav"));
 	music.loop();
 
-	laserSound = new SoundFile(this, sketchPath("laser.wav"));
-	lostMusic = new SoundFile(this, sketchPath("lost.wav"));
-	wonMusic = new SoundFile(this, sketchPath("won.wav"));
+	laserSound = new SoundFile(this, sketchPath("assets/laser.wav"));
+	lostMusic = new SoundFile(this, sketchPath("assets/lost.wav"));
+	wonMusic = new SoundFile(this, sketchPath("assets/won.wav"));
 
 	PImage star = loadImage("assets/star.jpg");
 	star.resize(87/4, 86/4);
@@ -61,6 +61,11 @@ void setup() {
 }
 
 void draw() {
+	background(0);
+	for (Star star : stars) {
+		star.update();
+		star.draw();
+	}
 	if (titleScreen) {
 		titleScreen();
 		return;
@@ -73,13 +78,8 @@ void draw() {
 		playerLostScreen();
 		return;
 	}
-
-	background(0);
-
-	for (Star star : stars) {
-		star.update();
-		star.draw();
-	}
+	if (checkWon()) playerWon = true;
+	if (checkLost()) playerLost = true;
 
 	for (int i = 0; i < enemyBulls.size(); i++) {
 		EnemyBullet curr = enemyBulls.get(i);
@@ -103,8 +103,6 @@ void draw() {
 		return;
 	}
 	if (frameCount%10 == 0 && (frameCount/60)%2 == 0)createEnemyBull();
-	if (checkWon()) playerWon = true;
-	if (checkLost()) playerLost = true;
 }
 
 void input() {
@@ -179,8 +177,16 @@ boolean playerCollision(EnemyBullet bull) {
 
 void createEnemyBull() {
 	laserSound.play();
+	int numBulls = enemyBulls.size();
 	for (int i = 0; i < enemyStage + (enemyStage-1); i++) {
 		enemyBulls.add(new EnemyBullet(entities[1].x, entities[1].y + (20*i)));
+	}
+	if (enemyStage > 1) {
+		for (int i = numBulls; i < numBulls + enemyStage + (enemyStage-1); i++) {
+			EnemyBullet currBull = enemyBulls.get(i);
+			currBull.xVel = (currBull.x - entities[0].x) * (-.01*enemyStage);
+			currBull.yVel = (currBull.y - entities[0].y) * (-.01*enemyStage);
+		}
 	}
 }
 
@@ -189,10 +195,9 @@ void drawExplosion() {
 }
 
 void titleScreen() {
-	background(255);
 	textSize(100);
-	fill(0);
-	text("Work in Prog", width/2 - 275, height/2);
+	fill(255);
+	text("SPACE DEFENDERS", width/2 - 425, height/2);
 	if (keyPressed && key == ENTER) {
 		titleScreen = false; bossFight = true;
 	}
@@ -200,22 +205,20 @@ void titleScreen() {
 
 
 void playerLostScreen() {
-	background(255);
 	textSize(100);
-	fill(0);
+	fill(255);
 	text("GAME OVER", width/2 - 275, height/2);
 }
 
 void playerWonScreen() {
-	background(255);
 	textSize(100);
-	fill(0);
+	fill(255);
 	text("YOU WON", width/2 - 275, height/2);
 }
 
 
 boolean checkWon() {
-	if (entities[1].health == 0) {
+	if (entities[1].health < 1) {
 		music.stop();
 		wonMusic.loop();
 		return true;
@@ -224,7 +227,7 @@ boolean checkWon() {
 }
 
 boolean checkLost() {
-	if (entities[0].health == 0) {
+	if (entities[0].health < 1) {
 		music.stop();
 		lostMusic.loop();
 		return true;
