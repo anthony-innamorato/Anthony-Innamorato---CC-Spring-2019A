@@ -23,6 +23,10 @@ boolean bossFight = false;
 boolean playerWon = false;
 boolean playerLost = false;
 
+PImage titleText;
+PImage lostText;
+PImage wonText;
+
 
 void setup() {
 	size(1920, 1080);
@@ -30,6 +34,10 @@ void setup() {
 	imageMode(CENTER);
 	rectMode(CENTER);
 	enemyBulls = new ArrayList<EnemyBullet>();
+
+	titleText = loadImage("assets/title.png");
+	lostText = loadImage("assets/lost.png");
+	wonText = loadImage("assets/won.png");
 
 	//add player
 	entities[0] = new Player(100, height/2, loadImage("assets/player.png"));
@@ -95,6 +103,7 @@ void draw() {
 		curr.draw();
 		curr.update();
 	}
+	playerCollisionWithBoss();
 
 	input();
 	pBullUpdate();
@@ -163,6 +172,19 @@ boolean bossCollision() {
 	return false;
 }
 
+void playerCollisionWithBoss() {
+	Entity player = entities[0];
+	Entity enemy = entities[1];
+	float halfWidth = enemy.imgWidth/2;
+	float halfHeight = enemy.imgHeight/2;
+	if (player.x > enemy.x - halfWidth && player.x < enemy.x + halfWidth &&
+		player.y > enemy.y - halfHeight && player.y < enemy.y + halfWidth) {
+			music.stop();
+			lostMusic.loop();
+			playerLost = true;
+	}
+}
+
 boolean playerCollision(EnemyBullet bull) {
 	Entity player = entities[0];
 	float halfWidth = player.imgWidth/2;
@@ -195,9 +217,7 @@ void drawExplosion() {
 }
 
 void titleScreen() {
-	textSize(100);
-	fill(255);
-	text("SPACE DEFENDERS", width/2 - 425, height/2);
+	image(titleText, width/2, height/2);
 	if (keyPressed && key == ENTER) {
 		titleScreen = false; bossFight = true;
 	}
@@ -205,15 +225,11 @@ void titleScreen() {
 
 
 void playerLostScreen() {
-	textSize(100);
-	fill(255);
-	text("GAME OVER", width/2 - 275, height/2);
+	image(lostText, width/2, height/2);
 }
 
 void playerWonScreen() {
-	textSize(100);
-	fill(255);
-	text("YOU WON", width/2 - 275, height/2);
+	image(wonText, width/2, height/2);
 }
 
 
