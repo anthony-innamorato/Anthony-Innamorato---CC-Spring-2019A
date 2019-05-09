@@ -14,7 +14,8 @@ class EnemyBullet {
 
 	boolean update() {
 		x += xVel; y += yVel;
-		if (x < 0 || x > width) {
+		//if oob, return true to indicate
+		if (x < 0 || x > width || y < 0 || y > height) {
 			return true;
 		}
 		return false;

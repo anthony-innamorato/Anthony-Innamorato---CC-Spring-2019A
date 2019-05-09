@@ -12,6 +12,7 @@ class Star {
 
 	void update() {
 		x--;
+		//if on left side of screen, reset to the right side
 		if (x < -100) x = width + 100;
 	}
 }

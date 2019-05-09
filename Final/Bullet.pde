@@ -15,8 +15,8 @@ class Bullet {
 	boolean update() {
 		x += xVel;
 		y += yVel;
-		if (y > height || y < 0
-			|| x < 0 || x > width) {
+		//if oob, return true to indicate
+		if (y > height || y < 0 || x < 0 || x > width) {
 			return true;
 		}
 		return false;

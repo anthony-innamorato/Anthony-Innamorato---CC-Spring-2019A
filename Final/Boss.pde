@@ -19,6 +19,7 @@ class Boss extends Entity {
 	}
 
 	void update() {
+		//dont allow boss to move is explosion is occuring
 		if (framesForExplosion != 0) {
 			framesForExplosion--;
 			return;
