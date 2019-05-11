@@ -42,6 +42,7 @@ int score = 0;
 int prevScore = 0;
 
 
+
 void setup() {
 	size(1920, 1080);
 	background(0);
@@ -271,11 +272,25 @@ void createEnemyBull() {
 	//laser sound and create bullets based on enemt stage
 	laserSound.play();
 	int numBulls = enemyBulls.size();
-	for (int i = 0; i < enemyStage + (enemyStage-1); i++) {
-		enemyBulls.add(new EnemyBullet(entities[1].x, entities[1].y + (20*i)));
+	//non-circle pattern
+	if (enemyStage < 3) {
+		for (int i = 0; i < enemyStage + (enemyStage-1); i++) {
+			enemyBulls.add(new EnemyBullet(entities[1].x, entities[1].y + (20*i)));
+		}
+	//circle pattern
+	} else {
+		float rad = 60;
+		for (int i = 0; i < 12; i++) {
+			float x = rad * cos(radians(30*i));
+			float y = rad * sin(radians(30*i));
+			enemyBulls.add(new EnemyBullet((entities[1].x) + x, (entities[1].y) + y));
+		}
 	}
+	//tracking only for stages 2 & 3
 	if (enemyStage > 1) {
-		for (int i = numBulls; i < numBulls + enemyStage + (enemyStage-1); i++) {
+		int range = numBulls + enemyStage + (enemyStage-1);
+		if (enemyStage == 3) range = numBulls + 12;
+		for (int i = numBulls; i < range; i++) {
 			EnemyBullet currBull = enemyBulls.get(i);
 			//set the vels to allow for tracking to last player position
 			currBull.xVel = (currBull.x - entities[0].x) * (-.01*enemyStage);
@@ -299,6 +314,8 @@ void titleScreen() {
 void pausedScreen() {
 	//flash the paused sign
 	if ((frameCount/60)%2 == 0) image(pausedText, width/2, height/2);
+	fill(255, 0, 170);
+	text("Hold p to exit", width/2, height*.75);
 	if (pausedWait != 0) {
 		pausedWait--; return;
 	}
@@ -310,7 +327,7 @@ void pausedScreen() {
 
 
 void playerLostScreen() {
-	fill(255);
+	fill(255, 0, 170);
 	image(lostText, width/2, height*.25);
 	text("YOUR SCORE:" + str(score), width/2, height/2);
 	if (score > prevScore) text("NEW HIGH SCORE!!!", width/2, height*.75);
@@ -318,7 +335,7 @@ void playerLostScreen() {
 }
 
 void playerWonScreen() {
-	fill(255);
+	fill(255, 0, 170);
 	image(wonText, width/2, height*.25);
 	text("YOUR SCORE:" + str(score), width/2, height/2);
 	if (score > prevScore) text("NEW HIGH SCORE!!!", width/2, height*.75);
@@ -347,7 +364,7 @@ boolean checkLost() {
 }
 
 void drawScore() {
-	fill(255);
+	fill(255, 0, 170);
 	textSize(75);
 	text(score, width*.66, height-50);
 }
