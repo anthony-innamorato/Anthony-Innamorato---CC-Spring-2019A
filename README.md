@@ -1,4 +1,7 @@
 # Anthony-Innamorato---CC-Spring-2019A
+
+### Coolest assignments are: Final, hw9, midterm, hw2 (solving sol prompt 45)
+
 Homework assignments for Spring 2019 Creative Coding
 
 
